@@ -1,4 +1,5 @@
-csv2psql
-========
+To try it out:
 
-Converts a CSV file into a PostgreSQL table
+	% python setup.py install
+	% csv2psql --schema=public --key=student_id,class_id example/enrolled.csv > enrolled.sql
+	% psql -f enrolled.sql
