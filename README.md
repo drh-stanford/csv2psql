@@ -6,7 +6,7 @@ To try it out:
 
 Converts a CSV file into a PostgreSQL table.
 
-	Usage: csv2psql.py [options] ( input.csv | - ) [tablename] | psql
+	Usage: csv2psql [options] ( input.csv | - ) [tablename] | psql
 
 	options include:
 	--schema=name   use name as schema, and strip table name if needed
