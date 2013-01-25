@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="csv2psql : Converts a CSV file into a PostgreSQL table" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>csv2psql</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/drhardy/csv2psql">View on GitHub</a>
+
+          <h1 id="project_title">csv2psql</h1>
+          <h2 id="project_tagline">Converts a CSV file into a PostgreSQL table</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/drhardy/csv2psql/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/drhardy/csv2psql/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>To try it out:</p>
+
+<pre><code>% python setup.py install
+% csv2psql --schema=public --key=student_id,class_id example/enrolled.csv &gt; enrolled.sql
+% psql -f enrolled.sql
+</code></pre>
+
+<p>Converts a CSV file into a PostgreSQL table.</p>
+
+<pre><code>Usage: csv2psql.py [options] ( input.csv | - ) [tablename] | psql
+
+options include:
+--schema=name   use name as schema, and strip table name if needed
+--role=name     use name as role for database transaction
+--key=a:b:c     create a primary key using columns named a, b, c.
+--unique=a:b:c  create a unique index using columns named a, b, c.
+--append        skips table creation and truncation, inserts only
+--cascade       drops tables with cascades
+--sniff=N       limit field type detection to N rows (default: 1000)
+--utf8          force client encoding to UTF8
+--datatype=name[,name]:type 
+        sets the data type for field NAME to TYPE
+
+environment variables:
+CSV2PSQL_SCHEMA      default value for --schema
+CSV2PSQL_ROLE        default value for --role
+
+
+Written by Darren Hardy &lt;hardy@nceas.ucsb.edu&gt;
+</code></pre>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">csv2psql maintained by <a href="https://github.com/drhardy">drhardy</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
