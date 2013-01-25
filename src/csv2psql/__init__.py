@@ -24,5 +24,5 @@ __author__ = "Darren Hardy <hardy@nceas.ucsb.edu>"
 __version__ = '0.4.2'
 __credits__ = "Copyright (c) 2011-2013 NCEAS (UCSB). All rights reserved."
 
-from csv2psql import csv2psql
+from csv2psql import csv2psql, main
 __all__ = [ 'csv2psql' ]

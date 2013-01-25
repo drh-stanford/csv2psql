@@ -1,3 +1,11 @@
+25 Jan 2013:  Darren Hardy <hardy@nceas.ucsb.edu>
+
+    * __init__.py, csv2psql-0.4.2.zip, csv2psql.py, entry_points.txt, setup.py:
+      corrected --help
+
+    * PKG-INFO, __init__.py, csv2psql-0.4.2.zip, csv2psql.py,
+      linear-flow-0.9.3.zip, setup.py: minor cleanup
+
 15 Jan 2013:  Darren Hardy <hardy@nceas.ucsb.edu>
 
 16 Nov 2012:  Darren Hardy <hardy@nceas.ucsb.edu>

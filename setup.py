@@ -12,6 +12,6 @@ setup(
     url = "http://www.nceas.ucsb.edu/",
     entry_points='''
 [console_scripts]
-csv2psql = csv2psql.__init__:main
+csv2psql = csv2psql:main
 '''
 )
