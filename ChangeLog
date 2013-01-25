@@ -1,0 +1,31 @@
+15 Jan 2013:  Darren Hardy <hardy@nceas.ucsb.edu>
+
+16 Nov 2012:  Darren Hardy <hardy@nceas.ucsb.edu>
+
+    * PKG-INFO, __init__.py, csv2psql-0.4.1.zip, flow.py, linear-flow-0.9.2.zip,
+      setup.py: improved error output (refs #38)
+
+    * csv2psql-0.4.1.zip, linear-flow-0.9.1.zip: added Changelogs (refs #38)
+
+    * SOURCES.txt, csv2psql-0.4.1.zip, export.sh, linear-flow-0.9.1.zip: added
+      Changelogs (refs #38)
+
+    * SOURCES.txt, csv2psql-0.4.1.zip, export.sh, linear-flow-0.9.1.zip: remove
+      dist files in subdirs (refs #38)
+
+12 Nov 2012:  Darren Hardy <hardy@nceas.ucsb.edu>
+
+05 Sep 2012:  Darren Hardy <hardy@nceas.ucsb.edu>
+
+24 Aug 2012:  Darren Hardy <hardy@nceas.ucsb.edu>
+
+    * __init__.py: fixed problem with type reversion
+
+23 Aug 2012:  Darren Hardy <hardy@nceas.ucsb.edu>
+
+18 Jun 2012:  Darren Hardy <hardy@nceas.ucsb.edu>
+
+17 Jun 2012:  Darren Hardy <hardy@nceas.ucsb.edu>
+
+14 Jun 2012:  Darren Hardy <hardy@nceas.ucsb.edu>
+

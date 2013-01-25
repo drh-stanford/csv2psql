@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: csv2psql
+Version: 0.4.2
+Summary: Convert CSV files into PostgreSQL tables
+Home-page: http://www.nceas.ucsb.edu/
+Author: Darren Hardy
+Author-email: hardy@nceas.ucsb.edu
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
