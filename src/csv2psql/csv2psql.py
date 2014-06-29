@@ -5,15 +5,16 @@
 Usage: csv2psql.py [options] ( input.csv | - ) [tablename] | psql
 
 options include:
---schema=name   use name as schema, and strip table name if needed
---role=name     use name as role for database transaction
---key=a:b:c     create a primary key using columns named a, b, c.
---unique=a:b:c  create a unique index using columns named a, b, c.
---append        skips table creation and truncation, inserts only
---cascade       drops tables with cascades
---sniff=N       limit field type detection to N rows (default: 1000)
---utf8          force client encoding to UTF8
---datatype=name[,name]:type 
+--schema=name       use name as schema, and strip table name if needed
+--tablespace=space  name of tablespace to use
+--role=name         use name as role for database transaction
+--key=a:b:c         create a primary key using columns named a, b, c.
+--unique=a:b:c      create a unique index using columns named a, b, c.
+--append            skips table creation and truncation, inserts only
+--cascade           drops tables with cascades
+--sniff=N           limit field type detection to N rows (default: 1000)
+--utf8              force client encoding to UTF8
+--datatype=name[,name]:type
                 sets the data type for field NAME to TYPE
 
 environment variables:
@@ -318,24 +319,25 @@ def _sniffer(f, maxsniff = -1, datatype = {}):
                             _tbl[_k] = { 'type': dt, 'width': _grow_varchar(v) }
 
     return _tbl
-    
-def _csv2psql(ifn, tablename, 
-                fout = sys.stdout, 
-                analyze_table = True, 
-                cascade = False, 
-                create_table = True, 
+
+def _csv2psql(ifn, tablename,
+                fout = sys.stdout,
+                analyze_table = True,
+                cascade = False,
+                create_table = True,
                 datatype = {},
-                default_to_null = True, 
-                default_user = None, 
-                delimiter = ',', 
-                force_utf8 = False, 
-                load_data = True, 
-                maxsniff = -1, 
-                pkey = None, 
-                quiet = True, 
-                schema = None, 
-                strip_prefix = True, 
-                truncate_table = False, 
+                default_to_null = True,
+                default_user = None,
+                delimiter = ',',
+                force_utf8 = False,
+                load_data = True,
+                maxsniff = -1,
+                pkey = None,
+                quiet = True,
+                schema = None,
+                tablespace = None,
+                strip_prefix = True,
+                truncate_table = False,
                 uniquekey = None):
     if schema is None:
         schema = os.getenv('CSV2PSQL_SCHEMA', 'public').strip()
@@ -411,7 +413,13 @@ def _csv2psql(ifn, tablename,
             cols.append('%s %s' % (_psql_identifier(_k), sqldt))
 
         print >>fout, ",\n\t".join(cols)
-        print >>fout, ");"
+        print >>fout, ") "
+
+        if tablespace is not None:
+          print >>fout, "TABLESPACE", tablespace, ";"
+        else:
+          print >>fout, ";"
+
         if default_user is not None:
             print >>fout, "ALTER TABLE", tablename, "OWNER TO", default_user, ";"
         if pkey is not None:
@@ -454,7 +462,7 @@ def _csv2psql(ifn, tablename,
 def _usage():
     print '''%s\n\nWritten by %s''' % (__doc__, __author__)
 
-_schemas = [ 'public' ] 
+_schemas = [ 'public' ]
 
 _datatypes = ['int4', 'float8', 'str', 'integer', 'float', 'double', 'text']
 _verbose = True
@@ -476,7 +484,7 @@ def main(argv = None):
         flags = dict()
         flags['maxsniff']= 1000
 
-        opts, args = getopt.getopt(argv, "ak:s:q", ["help", "version", "schema=", "key=", "unique=", "cascade", "append", "utf8", "sniff=", "datatype=", "role="])
+        opts, args = getopt.getopt(argv, "ak:s:q", ["help", "version", "schema=", "key=", "unique=", "cascade", "append", "utf8", "sniff=", "datatype=", "role=", "tablespace="])
         for o, a in opts:
             if o in ("--version"):
                 print __version__
@@ -503,6 +511,8 @@ def main(argv = None):
                 flags['uniquekey'] = a.split(':')
             elif o in ("--utf8"):
                 flags['force_utf8'] = True
+            elif o in ("--tablespace"):
+                flags['tablespace'] = a
             elif o in ("--datatype"):
                 if 'datatype' not in flags:
                     flags['datatype'] = dict()
