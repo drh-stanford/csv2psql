@@ -157,7 +157,7 @@ constant in src/include/pg_config_manual.h.
     'year_'
     >>> _mangle_table('a table name much longer than 64 characters blah blah blah blah blah blah blah blah')
     'a_table_name_much_longer_than_64_characters_blah_blah_blah_bla'
-    >>> 
+    >>>
 
     '''
     assert s is not None and len(s) > 0
@@ -190,7 +190,7 @@ def _isbool(v):
 
 def _grow_varchar(s):
     '''varchar grows by 80,255,1024
-    
+
     >>> _grow_varchar(None)
     80
     >>> _grow_varchar("hello")
@@ -201,7 +201,7 @@ def _grow_varchar(s):
     1024
     >>> _grow_varchar("hello hello hello hello hello" * 100)
     2900
-    
+
     '''
     if s is None:
         return 80 # default size
@@ -213,10 +213,10 @@ def _grow_varchar(s):
     if l <= 1024:
         return 1024
     return l
-    
+
 def _psqlencode(v, dt):
     '''encodes using the text mode of PostgreSQL 8.4 "COPY FROM" command
-    
+
     >>> _psqlencode('hello "there"', str)
     'hello "there"'
     >>> _psqlencode("hello 'there'", str)
@@ -233,7 +233,7 @@ def _psqlencode(v, dt):
     '\\N'
     >>> _psqlencode("	", str)
     '\\x09'
-    
+
     '''
     if v is None or v == '':
         return '' if dt == str else '\\N'
@@ -257,7 +257,7 @@ def _psqlencode(v, dt):
 def _sniffer(f, maxsniff = -1, datatype = {}):
     '''sniffs out data types'''
     _tbl = dict()
-    
+
     # initialize data types
     for k in f.fieldnames:
         _k = _mangle(k)
@@ -283,24 +283,24 @@ def _sniffer(f, maxsniff = -1, datatype = {}):
         i = 0
         for row in f:
             i += 1
-            if maxsniff > 0 and i > maxsniff: 
+            if maxsniff > 0 and i > maxsniff:
                 break
-            
+
             # if _verbose: print >>sys.stderr, 'sniffing row', i, '...', row, _tbl
-            
+
             # sniff each data field
             for k in f.fieldnames:
                 _k = _mangle(k)
                 assert len(_k) > 0
 
-                v = row[k]                
+                v = row[k]
                 assert type(v) == str
                 if len(v) == 0:
                     continue # skip empty strings
 
                 if _k in datatype:
                     continue # skip already typed column
-                    
+
                 (dt, dw) = (_tbl[_k]['type'], _tbl[_k]['width'])
                 try:
                     if (_isbool(v) or int(v) is not None) and not (dt == float):
@@ -367,7 +367,7 @@ def _csv2psql(ifn, tablename,
             tablename = tablename[len(schema)+1:]
             while not tablename[0].isalpha():
                 tablename = tablename[1:]
-    
+
     # add explicit client encoding
     if force_utf8:
         print >>fout, "\\encoding UTF8\n"
@@ -387,7 +387,7 @@ def _csv2psql(ifn, tablename,
                 continue
 
             (dt, dw) = (_tbl[_k]['type'], _tbl[_k]['width'])
-            
+
             if dt == str:
                 if dw > 0 and dw <= 1024:
                     sqldt = "VARCHAR(%d)" % (dw)
@@ -405,11 +405,11 @@ def _csv2psql(ifn, tablename,
                     sqldt = "REAL"
             else:
                 sqldt = "TEXT" # unlimited length
-        
+
             if not default_to_null:
                 sqldt += " NOT NULL"
             cols.append('%s %s' % (_psql_identifier(_k), sqldt))
-        
+
         print >>fout, ",\n\t".join(cols)
         print >>fout, ");"
         if default_user is not None:
@@ -418,7 +418,7 @@ def _csv2psql(ifn, tablename,
             print >>fout, "ALTER TABLE", tablename, "ADD PRIMARY KEY (", ','.join(pkey), ");"
         if uniquekey is not None:
             print >>fout, "ALTER TABLE", tablename, "ADD UNIQUE (", ','.join(uniquekey), ");"
-    
+
     if truncate_table and not load_data:
         print >>fout, "TRUNCATE TABLE", tablename, ";"
 
@@ -445,10 +445,10 @@ def _csv2psql(ifn, tablename,
                     sys.exit(1)
             print >>fout, "\t".join(outrow)
         print >>fout, "\\."
-    
+
     if load_data and analyze_table:
         print >>fout, "ANALYZE", tablename, ";"
-        
+
     return _tbl
 
 def _usage():
@@ -461,7 +461,7 @@ _verbose = True
 
 def csv2psql(filename, tablename, **flags):
     ''' Main entry point. Converts CSV `filename` into PostgreSQL `tablename`.
-    To detect data types for each field, it reads `flags.maxsniff` rows in 
+    To detect data types for each field, it reads `flags.maxsniff` rows in
     the CSV file. If `flags.maxsniff` = -1 then it reads the entire CSV file.
     Set `maxsniff` = 0 to disable data type detection.
     '''
@@ -517,7 +517,7 @@ def main(argv = None):
                 _verbose = False
             else:
                 raise getopt.GetoptError('unknown option %s' % (o))
-        
+
         if len(args) < 1:
             _usage()
             return -1
@@ -526,14 +526,14 @@ def main(argv = None):
             fn = args[0]
             if fn == '-':
                 raise getopt.GetoptError('cannot guess tablename')
-                
+
             tablename = os.path.splitext(os.path.basename(fn))[0]
             if 'schema' not in flags:
                 for s in _schemas:
                     if tablename.startswith(s):
                         flags['schema'] = s
                         break
-                        
+
             print flags;
             csv2psql(fn, _mangle_table(tablename), **flags)
             return 0
@@ -549,6 +549,6 @@ def main(argv = None):
         print >>sys.stderr, 'ERROR:', str(err), "\n\n"
         _usage()
         return -1
-        
+
 if __name__ == '__main__':
     sys.exit(main())
